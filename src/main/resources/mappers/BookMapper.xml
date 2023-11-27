@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rmsoft.librarymanagementsystem.domain.book.repository.BookRepository">
+    <insert id="insertBook" parameterType="rmsoft.librarymanagementsystem.domain.book.entity.Book">
+        INSERT INTO BOOK
+        (
+        title,
+        book_category,
+        book_status
+        ) VALUES (
+        #{book.title},
+        #{book.bookCategory},
+        #{book.bookStatus}
+        )
+    </insert>
+    
+    <select id="selectBookByTitle" resultType="rmsoft.librarymanagementsystem.domain.book.dto.GetBookResponseDto">
+        SELECT
+        book_id AS bookId,
+        title,
+        book_category AS bookCategory,
+        book_status AS bookStatus
+        FROM BOOK
+        WHERE book_id = #{bookId}
+    </select>
+
+    <update id="updateBook" parameterType = "java.util.Map">
+        UPDATE BOOK
+        SET
+        title = #{book.title},
+        book_category = #{book.bookCategory}
+        WHERE book_id = #{bookId}
+    </update>
+
+    <select id="selectBookList" resultType="rmsoft.librarymanagementsystem.domain.book.dto.GetBookResponseDto">
+        SELECT
+        book_id AS bookId,
+        title,
+        book_category AS bookCategory,
+        book_status AS bookStatus
+        FROM BOOK
+        <where>
+                <if test="searchTitle != null">
+                    and title like concat('%', #{searchTitle}, '%')
+                </if>
+                <if test="searchCategory != null">
+                    and book_category like concat('%', #{searchCategory}, '%')
+                </if>
+        </where>
+        ORDER BY title ASC
+        LIMIT #{limit}
+        OFFSET #{offset}
+    </select>
+
+    <select id="selectBookTotalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM BOOK
+        <where>
+            <if test="searchTitle != null">
+                and title like concat('%', #{searchTitle}, '%')
+            </if>
+            <if test="searchCategory != null">
+                and book_category like concat('%', #{searchCategory}, '%')
+            </if>
+        </where>
+    </select>
+    
+    <delete id="deleteBook">
+        DELETE
+        FROM BOOK
+        WHERE book_id = #{bookId}
+    </delete>
+</mapper>

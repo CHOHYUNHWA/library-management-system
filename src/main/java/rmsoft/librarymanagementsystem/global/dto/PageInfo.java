@@ -1,14 +1,14 @@
 package rmsoft.librarymanagementsystem.global.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
-@AllArgsConstructor
-@Getter
+@Data
 public class PageInfo {
-    private int page;
-    private int size;
-    private long totalElements;
-    private int totalPages;
+    private int totalCount;
+    private int totalPage;
+    private int pageNum;
+    private int pageSize;
 }
 

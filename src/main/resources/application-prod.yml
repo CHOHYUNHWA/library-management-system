@@ -13,18 +13,6 @@
 #    key:
 #    access-token-expiration-minutes:
 #    refresh-token-expiration-minutes:
-#  mail:
-#    host: smtp.gmail.com
-#    port: 465
-#    username:
-#    password:
-#    properties:
-#      mail.smtp.auth: true
-#      mail.smtp.ssl.enable: true
-#      mail.smtp.ssl.trust: smtp.gmail.com
-#  redis:
-#    host:
-#    port:
 #springdoc:
 #  api-docs:
 #    enabled: true

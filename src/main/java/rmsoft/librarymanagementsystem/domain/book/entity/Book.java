@@ -19,7 +19,8 @@ public class Book {
     @Column(name = "book_id")
     private Long id;
     private String title;
-    private BookCategory bookCategory;
+    private String bookCategory;
+    private boolean bookStatus;
 
     @Builder.Default
     @OneToMany(mappedBy = "book")
