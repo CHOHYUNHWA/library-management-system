@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ubuntu/app/library-management-system"
-JAR_FILE="$PROJECT_ROOT/lms-server.jar"
+PROJECT_ROOT="/home/ubuntu/app/deploy"
+JAR_FILE="$PROJECT_ROOT/lms-project.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
