@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="rmsoft.librarymanagementsystem.domain.bookRental.repository.BookRentalRepository">
+    <insert id="insertBookRental" parameterType="rmsoft.librarymanagementsystem.domain.bookRental.dto.BookRentalRequestDto">
+        INSERT INTO BOOK_RENTAL
+        (
+        member_id,
+        book_id,
+        rental_date,
+        expired_date
+        ) VALUES (
+        (SELECT member_id FROM MEMBER WHERE email = #{bookRental.email}),
+        #{bookRental.bookId},
+        <!--        DATE_FORMAT(NOW(), '%Y/%m/%d'),-->
+        <!--        DATE_FORMAT(NOW(), '%Y/%m/%d');-->
+        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss'),
+<!--        FORMATDATETIME(DATE_ADD(NOW(), INTERVAL 7 DAY), 'yyyy-MM-dd hh:mm:ss')-->
+        FORMATDATETIME(DATEADD('DAY', 7, CURRENT_TIMESTAMP), 'yyyy-MM-dd hh:mm:ss')
+        )
+    </insert>
+
+
+    <update id="updateBookReturn" parameterType="java.lang.Long">
+        UPDATE
+        BOOK_RENTAL SET
+        return_date = FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss')
+        WHERE book_id = #{bookId}
+    </update>
+
+    <select id="selectBookRentalTotalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM BOOK_RENTAL r
+        INNER JOIN MEMBER m ON m.member_id = r.member_id
+        INNER JOIN BOOK b ON b.book_id = r.book_id
+        <where>
+            <if test="searchEmail != null">
+                and m.email like concat('%', #{searchEmail}, '%')
+            </if>
+            <if test="searchName != null">
+                and m.name like concat('%', #{searchName}, '%')
+            </if>
+            <if test="searchTitle != null">
+                and b.title like concat('%', #{searchTitle}, '%')
+            </if>
+            <if test="searchAuthor != null">
+                and b.author like concat('%', #{searchAuthor}, '%')
+            </if>
+            <if test="bookStatus != null">
+                and b.book_status = #{bookStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBookRentalList" resultType="rmsoft.librarymanagementsystem.domain.bookRental.dto.GetBookRentalResponseDto">
+        SELECT
+        m.email,
+        m.name,
+        m.phone_number,
+        b.title,
+        b.author,
+        b.book_category AS bookCategory,
+        b.book_status AS bookStatus,
+        r.rental_date AS rentalDate,
+        r.expired_date AS expiredDate,
+        r.return_date AS returnDate
+        FROM BOOK_RENTAL r
+        INNER JOIN MEMBER m ON m.member_id = r.member_id
+        INNER JOIN BOOK b ON b.book_id = r.book_id
+        <where>
+            <if test="searchEmail != null">
+                and m.email like concat('%', #{searchEmail}, '%')
+            </if>
+            <if test="searchName != null">
+                and m.name like concat('%', #{searchName}, '%')
+            </if>
+            <if test="searchTitle != null">
+                and b.title like concat('%', #{searchTitle}, '%')
+            </if>
+            <if test="searchAuthor != null">
+                and b.author like concat('%', #{searchAuthor}, '%')
+            </if>
+            <if test="bookStatus != null">
+                and b.book_status = #{bookStatus}
+            </if>
+        </where>
+        ORDER BY expired_date ASC
+        LIMIT #{limit}
+        OFFSET #{offset}
+    </select>
+</mapper>

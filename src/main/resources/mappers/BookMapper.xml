@@ -7,21 +7,30 @@
         INSERT INTO BOOK
         (
         title,
+        author,
         book_category,
-        book_status
+        book_status,
+        created_date,
+        last_modified_date
         ) VALUES (
         #{book.title},
+        #{book.author},
         #{book.bookCategory},
-        #{book.bookStatus}
+        #{book.bookStatus},
+        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss'),
+        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss')
         )
     </insert>
     
-    <select id="selectBookByTitle" resultType="rmsoft.librarymanagementsystem.domain.book.dto.GetBookResponseDto">
+    <select id="selectBookById" resultType="rmsoft.librarymanagementsystem.domain.book.dto.GetBookResponseDto">
         SELECT
         book_id AS bookId,
         title,
+        author,
         book_category AS bookCategory,
-        book_status AS bookStatus
+        book_status AS bookStatus,
+        created_date AS createdDate,
+        last_modified_date AS lastModifiedDate
         FROM BOOK
         WHERE book_id = #{bookId}
     </select>
@@ -30,7 +39,9 @@
         UPDATE BOOK
         SET
         title = #{book.title},
-        book_category = #{book.bookCategory}
+        author = #{book.author},
+        book_category = #{book.bookCategory},
+        last_modified_date = FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss')
         WHERE book_id = #{bookId}
     </update>
 
@@ -38,15 +49,24 @@
         SELECT
         book_id AS bookId,
         title,
+        author,
         book_category AS bookCategory,
-        book_status AS bookStatus
+        book_status AS bookStatus,
+        created_date AS createdDate,
+        last_modified_date AS lastModifiedDate
         FROM BOOK
         <where>
                 <if test="searchTitle != null">
                     and title like concat('%', #{searchTitle}, '%')
                 </if>
+                <if test="searchAuthor != null">
+                    and author like concat('%', #{searchAuthor}, '%')
+                </if>
                 <if test="searchCategory != null">
                     and book_category like concat('%', #{searchCategory}, '%')
+                </if>
+                <if test="bookStatus != null">
+                    and book_status = #{bookStatus}
                 </if>
         </where>
         ORDER BY title ASC
@@ -61,8 +81,14 @@
             <if test="searchTitle != null">
                 and title like concat('%', #{searchTitle}, '%')
             </if>
+            <if test="searchAuthor != null">
+                and author like concat('%', #{searchAuthor}, '%')
+            </if>
             <if test="searchCategory != null">
                 and book_category like concat('%', #{searchCategory}, '%')
+            </if>
+            <if test="bookStatus != null">
+                and book_status = #{bookStatus}
             </if>
         </where>
     </select>
@@ -72,4 +98,19 @@
         FROM BOOK
         WHERE book_id = #{bookId}
     </delete>
+
+
+    <update id="updateRentalBookStatus" parameterType="java.lang.Long">
+        UPDATE
+        BOOK SET
+        book_status = false
+        WHERE book_id = #{bookId}
+    </update>
+
+    <update id="updateReturnBookStatus" parameterType="java.lang.Long">
+        UPDATE
+        BOOK SET
+        book_status = true
+        WHERE book_id = #{bookId}
+    </update>
 </mapper>

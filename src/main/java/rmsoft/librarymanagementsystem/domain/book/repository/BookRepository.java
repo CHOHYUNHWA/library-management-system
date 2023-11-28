@@ -14,13 +14,16 @@ public interface BookRepository {
 
     int insertBook(@Param("book") Book book);
 
-    Optional<GetBookResponseDto> selectBookByTitle(Long bookId);
+    Optional<GetBookResponseDto> selectBookById(Long bookId);
 
     int updateBook(Long bookId, @Param("book") BookUpdateRequestDto bookUpdateRequestDto);
 
-    List<GetBookResponseDto> selectBookList(int offset, int limit, String searchTitle, String searchCategory);
+    List<GetBookResponseDto> selectBookList(int offset, int limit, String searchTitle, String searchAuthor, String searchCategory,Boolean bookStatus);
 
-    int selectBookTotalCount(String searchTitle, String searchCategory);
+    int selectBookTotalCount(String searchTitle,String searchAuthor, String searchCategory,Boolean bookStatus);
 
     int deleteBook(Long bookId);
+
+    int updateRentalBookStatus(Long bookId);
+    int updateReturnBookStatus(Long bookId);
 }

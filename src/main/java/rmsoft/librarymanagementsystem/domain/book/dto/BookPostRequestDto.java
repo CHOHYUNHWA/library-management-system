@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class BookPostRequestDto {
 
     private String title;
+    private String author;
     private String bookCategory;
 
 }

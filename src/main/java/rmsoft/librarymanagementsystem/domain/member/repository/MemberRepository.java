@@ -4,8 +4,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import rmsoft.librarymanagementsystem.domain.member.entity.Member;
 
+import java.util.Optional;
+
 @Mapper
 public interface MemberRepository{
 
-    public int insertMember(@Param("member") Member member);
+    int insertMember(@Param("member") Member member);
+
+    Optional<Member> selectMemberByEmail(String email);
 }

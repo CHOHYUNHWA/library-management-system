@@ -16,7 +16,6 @@ import rmsoft.librarymanagementsystem.global.exception.ExceptionCode;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookService {
 
@@ -27,14 +26,15 @@ public class BookService {
         bookRepository.insertBook(book);
     }
 
-    public GetBookResponseDto getBook(Long booId) {
+    public GetBookResponseDto getBook(Long bookId) {
         GetBookResponseDto getBookResponseDto =
-                bookRepository.selectBookByTitle(booId)
+                bookRepository.selectBookById(bookId)
                         .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
         return getBookResponseDto;
     }
 
     public void updateBook(Long bookId , BookUpdateRequestDto bookUpdateRequestDto) {
+        existsBook(bookId);
         bookRepository.updateBook(bookId, bookUpdateRequestDto);
     }
 
@@ -54,7 +54,9 @@ public class BookService {
         int totalCount =
                 bookRepository.selectBookTotalCount(
                     bookListSearchDto.getSearchTitle(),
-                    bookListSearchDto.getSearchCategory());
+                    bookListSearchDto.getSearchAuthor(),
+                    bookListSearchDto.getSearchCategory(),
+                    bookListSearchDto.getBookStatus());
         int totalPage = (int) Math.ceil((double) totalCount / pageSize);
 
         PageInfo pageInfo = new PageInfo();
@@ -68,11 +70,20 @@ public class BookService {
                         offset,
                         limit,
                         bookListSearchDto.getSearchTitle(),
-                        bookListSearchDto.getSearchCategory());
+                        bookListSearchDto.getSearchAuthor(),
+                        bookListSearchDto.getSearchCategory(),
+                        bookListSearchDto.getBookStatus());
         return new MultiResponseDto<GetBookResponseDto>(getBookResponseDtoList,pageInfo);
     }
 
     public void deleteBook(Long bookId) {
+        existsBook(bookId);
         bookRepository.deleteBook(bookId);
+    }
+
+    public void existsBook(Long bookId){
+        bookRepository.selectBookById(bookId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND)
+        );
     }
 }

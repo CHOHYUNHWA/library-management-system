@@ -1,24 +1,26 @@
-package rmsoft.librarymanagementsystem.domain.book.dto;
+package rmsoft.librarymanagementsystem.domain.bookRental.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetBookResponseDto {
+public class GetBookRentalResponseDto {
 
-    private Long bookId;
+    private String email;
+    private String name;
+    private String phoneNumber;
     private String title;
     private String author;
     private String bookCategory;
     private boolean bookStatus;
-    private String createdDate;
-    private String lastModifiedDate;
+    private String rentalDate;
+    private String expiredDate;
+    private String returnDate;
+
 
 }

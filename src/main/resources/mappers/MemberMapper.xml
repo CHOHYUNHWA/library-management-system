@@ -8,16 +8,30 @@
         (
         name,
         phone_number,
-        email
+        email,
+        created_date,
+        last_modified_date
         ) VALUES (
         #{member.name},
         #{member.phoneNumber},
-        #{member.email}
+        #{member.email},
+<!--        DATE_FORMAT(NOW(), '%Y/%m/%d'),-->
+<!--        DATE_FORMAT(NOW(), '%Y/%m/%d');-->
+        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss'),
+        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss')
         )
 <!--        <selectKey resultType="Long" keyProperty="member_id" order="AFTER">-->
 <!--&lt;!&ndash;            SELECT LAST_INSERT_ID()&ndash;&gt;-->
 <!--            CALL SCOPE_IDENTITY()-->
 <!--        </selectKey>-->
     </insert>
+
+    <select id="selectMemberByEmail" resultType="rmsoft.librarymanagementsystem.domain.member.entity.Member">
+        SELECT
+        *
+        FROM
+        MEMBER
+        WHERE email = #{email}
+    </select>
 
 </mapper>

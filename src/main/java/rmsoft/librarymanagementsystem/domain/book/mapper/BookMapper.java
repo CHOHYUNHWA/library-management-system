@@ -10,8 +10,9 @@ public class BookMapper {
     public Book toEntity(BookPostRequestDto bookPostRequestDto){
         return Book.builder()
                 .title(bookPostRequestDto.getTitle())
+                .author(bookPostRequestDto.getAuthor())
                 .bookCategory(bookPostRequestDto.getBookCategory())
-                .bookStatus(false)
+                .bookStatus(true)
                 .build();
     }
 }

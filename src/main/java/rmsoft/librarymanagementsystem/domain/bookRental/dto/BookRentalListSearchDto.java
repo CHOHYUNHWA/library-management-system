@@ -1,4 +1,4 @@
-package rmsoft.librarymanagementsystem.domain.book.dto;
+package rmsoft.librarymanagementsystem.domain.bookRental.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,17 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class BookListSearchDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class BookRentalListSearchDto {
 
     private int pageNum;
     private int pageSize;
+    private String searchEmail;
+    private String searchName;
     private String searchTitle;
     private String searchAuthor;
-    private String searchCategory;
     private Boolean bookStatus;
 
-
 }
+
+
