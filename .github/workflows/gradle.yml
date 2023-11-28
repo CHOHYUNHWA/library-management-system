@@ -18,7 +18,7 @@ env:
   S3_BUCKET_NAME: lmsawsbucket-1
   CODE_DEPLOY_APPLICATION_NAME: cicd-lms-CD
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: cicd-lms-CD-group
-   RESOURCE_PATH: .src/main/resources/application-prod.yml
+   RESOURCE_PATH: ./src/main/resources/application-prod.yml
 
 permissions:
   contents: read
