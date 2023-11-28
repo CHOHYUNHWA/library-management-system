@@ -69,7 +69,7 @@
                     and book_status = #{bookStatus}
                 </if>
         </where>
-        ORDER BY title ASC
+        ORDER BY title ASC, created_date DESC
         LIMIT #{limit}
         OFFSET #{offset}
     </select>
