@@ -4,7 +4,7 @@
 
 <mapper namespace="rmsoft.librarymanagementsystem.domain.member.repository.MemberRepository">
     <insert id="insertMember" parameterType="rmsoft.librarymanagementsystem.domain.member.entity.Member">
-        INSERT INTO MEMBER
+        INSERT INTO member
         (
         name,
         phone_number,
@@ -15,22 +15,16 @@
         #{member.name},
         #{member.phoneNumber},
         #{member.email},
-<!--        DATE_FORMAT(NOW(), '%Y/%m/%d'),-->
-<!--        DATE_FORMAT(NOW(), '%Y/%m/%d');-->
-        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss'),
-        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss')
+        DATE_FORMAT(NOW(), '%Y/%m/%d %H:%i:%s'),
+        DATE_FORMAT(NOW(), '%Y/%m/%d %H:%i:%s')
         )
-<!--        <selectKey resultType="Long" keyProperty="member_id" order="AFTER">-->
-<!--&lt;!&ndash;            SELECT LAST_INSERT_ID()&ndash;&gt;-->
-<!--            CALL SCOPE_IDENTITY()-->
-<!--        </selectKey>-->
     </insert>
 
     <select id="selectMemberByEmail" resultType="rmsoft.librarymanagementsystem.domain.member.entity.Member">
         SELECT
         *
         FROM
-        MEMBER
+        member
         WHERE email = #{email}
     </select>
 

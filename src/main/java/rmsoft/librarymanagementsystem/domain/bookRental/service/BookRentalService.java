@@ -30,6 +30,9 @@ public class BookRentalService {
         memberRepository.selectMemberByEmail(bookRentalRequestDto.getEmail()).orElseThrow(
                 ()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND)
         );
+        bookRepository.selectBookById(bookRentalRequestDto.getBookId()).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND)
+        );
         bookRentalRepository.insertBookRental(bookRentalRequestDto);
         bookRepository.updateRentalBookStatus(bookRentalRequestDto.getBookId());
     }

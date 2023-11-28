@@ -4,36 +4,33 @@
 
 <mapper namespace="rmsoft.librarymanagementsystem.domain.bookRental.repository.BookRentalRepository">
     <insert id="insertBookRental" parameterType="rmsoft.librarymanagementsystem.domain.bookRental.dto.BookRentalRequestDto">
-        INSERT INTO BOOK_RENTAL
+        INSERT INTO book_rental
         (
         member_id,
         book_id,
         rental_date,
         expired_date
         ) VALUES (
-        (SELECT member_id FROM MEMBER WHERE email = #{bookRental.email}),
+        (SELECT member_id FROM member WHERE email = #{bookRental.email}),
         #{bookRental.bookId},
-        <!--        DATE_FORMAT(NOW(), '%Y/%m/%d'),-->
-        <!--        DATE_FORMAT(NOW(), '%Y/%m/%d');-->
-        FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss'),
-<!--        FORMATDATETIME(DATE_ADD(NOW(), INTERVAL 7 DAY), 'yyyy-MM-dd hh:mm:ss')-->
-        FORMATDATETIME(DATEADD('DAY', 7, CURRENT_TIMESTAMP), 'yyyy-MM-dd hh:mm:ss')
+        DATE_FORMAT(NOW(), '%Y/%m/%d %H:%i:%s'),
+        DATE_ADD(NOW(), INTERVAL 7 DAY)
         )
     </insert>
 
 
     <update id="updateBookReturn" parameterType="java.lang.Long">
         UPDATE
-        BOOK_RENTAL SET
-        return_date = FORMATDATETIME(NOW(),'yyyy-MM-dd hh:mm:ss')
+        book_rental SET
+        return_date = DATE_FORMAT(NOW(), '%Y/%m/%d %H:%i:%s')
         WHERE book_id = #{bookId}
     </update>
 
     <select id="selectBookRentalTotalCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM BOOK_RENTAL r
-        INNER JOIN MEMBER m ON m.member_id = r.member_id
-        INNER JOIN BOOK b ON b.book_id = r.book_id
+        FROM book_rental r
+        INNER JOIN member m ON m.member_id = r.member_id
+        INNER JOIN book b ON b.book_id = r.book_id
         <where>
             <if test="searchEmail != null">
                 and m.email like concat('%', #{searchEmail}, '%')
@@ -65,9 +62,9 @@
         r.rental_date AS rentalDate,
         r.expired_date AS expiredDate,
         r.return_date AS returnDate
-        FROM BOOK_RENTAL r
-        INNER JOIN MEMBER m ON m.member_id = r.member_id
-        INNER JOIN BOOK b ON b.book_id = r.book_id
+        FROM book_rental r
+        INNER JOIN member m ON m.member_id = r.member_id
+        INNER JOIN book b ON b.book_id = r.book_id
         <where>
             <if test="searchEmail != null">
                 and m.email like concat('%', #{searchEmail}, '%')
