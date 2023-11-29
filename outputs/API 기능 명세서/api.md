@@ -1,4 +1,4 @@
-다음은 API 기능 명세서 주소 입니다.
+다음은 API 기능 명세서 주소 입니다. <br>
 https://documenter.getpostman.com/view/21358644/2s9YeG6XLL
 
 API 기능 명세 확인법은 아래 스크린샷을 참조 부탁 드립니다.
